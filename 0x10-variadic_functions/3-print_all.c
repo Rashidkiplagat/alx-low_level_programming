@@ -5,89 +5,52 @@
 /**
  * print_char - prints a character
  * @arg: the va_list argument
- */
-void print_char(va_list arg)
-{
-	printf("%c", va_arg(arg, int));
-}
-
-/**
- * print_int - prints an integer
- * @arg: the va_list argument
- */
-void print_int(va_list arg)
-{
-	printf("%d", va_arg(arg, int));
-}
-
-/**
- * print_float - prints a float
- * @arg: the va_list argument
- */
-void print_float(va_list arg)
-{
-	printf("%f", va_arg(arg, double));
-}
-
-/**
- * print_string - prints a string
- * @arg: the va_list argument
- */
-void print_string(va_list arg)
-{
-	char *s = va_arg(arg, char *);
-
-	if (s == NULL)
-{
-	printf("(nil)");
-}
-	else
-{
-	printf("%s", s);
-}
-}
-
-/**
- * print_all - prints anything
- * @format: a list of types of arguments passed to the function
+ *
+ * Return: success 0
  */
 void print_all(const char * const format, ...)
 {
 	va_list args;
-	int i = 0, j = 0;
-	char *sep = "";
+	char c_val;
+	int i_val;
+	float f_val;
+	char *s_val;
+	int i, j;
 
+	i = 0;
 	va_start(args, format);
-
 	while (format && format[i])
 {
-	j = 0;
+	j = 1;
 	switch (format[i])
 {
 	case 'c':
-	print_char(args);
-	break;
+		c_val = va_arg(args, int);
+		printf("%c", c_val);
+		break;
 	case 'i':
-	print_int(args);
-	break;
+		i_val = va_arg(args, int);
+		printf("%d", i_val);
+		break;
 	case 'f':
-	print_float(args);
-	break;
+		f_val = va_arg(args, double);
+		printf("%f", f_val);
+		break;
 	case 's':
-	print_string(args);
-	break;
-	default:
-	j = 1;
-	break;
+		s_val = va_arg(args, char *);
+		if (!s_val)
+		printf("(nil)");
+		else
+			printf("%s", s_val);
+		break;
+		default:
+		j = 0;
+		break;
 }
-	if (format[i + 1] != '\0' && !j)
-{
-	printf("%s", sep);
-	sep = ", ";
-}
+	if (format[i + 1] && j)
+		printf(", ");
 	i++;
-}
+	}
 	va_end(args);
-
 	printf("\n");
 }
